@@ -51,10 +51,6 @@ function init() {
 	}
 	$('.deck').html(shuffledCards);
 
-	// start the timer now
-	intervalId = setInterval(function() {
-		$('.time').text(getMyTime(startTime));
-	}, 1000);
 
 }
 
@@ -100,37 +96,54 @@ function updateStars(moves) {
 
 // handling each click on the card
 $('.deck').on('click', '.clickable', function() {
+
+	// start the timer now
+
+	if(moves === 0) {
+		startTime = Date.now();
+		intervalId = setInterval(function() {
+			$('.time').text(getMyTime(startTime));
+		}, 1000);
+	}
+
 	moves += 1;
 	$('.moves').text(moves);
 	updateStars(moves);
 
 	// to animate the opening of the card
 	$(this).addClass('open show');
+	$(this).removeClass('clickable');
 	visited.push($(this)); // collecting the visited cards
 
-	if( visited.length === 2) {
+	if( visited.length === 2) {	
 
 		// to handle clicking of the same card twice
 		if(visited[0].is(visited[1])) {
 			visited[0].removeClass('open show');
+			visited[0].addClass('clickable');
 			visited = [];
 		}
 
 		// checking if the cards have the same icon
 		if(visited[0].find('i').attr('class') !== visited[1].find('i').attr('class')) {
+			$('.deck').children().removeClass('clickable');
 			setTimeout(function() {
 				// animate when the cards do not match
 				for(let j = 0; j < visited.length; j++) {
 					visited[j].addClass('wrong');
+
 				}
 				setTimeout(function() {
 					// close the cards
 					for(let j = 0; j < visited.length; j++) {
 						visited[j].removeClass('open show wrong');
+						visited[j].addClass('clickable');
 					}			
 					visited = [];
+					$('.deck').children().addClass('clickable');
 				}, 500)
-			}, 500);								
+			}, 500);
+
 		} else {
 			// animate when the cards match
 			for(let j = 0; j < visited.length; j++) {
