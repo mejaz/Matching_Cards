@@ -19,7 +19,7 @@ The Matching Cards cards has been built using -
 3. jQuery : 3.2.1
 
 
-Steps to launch the MyReads App:
+Steps to launch the App:
 --------------------------------
 1. Double click on the index.html file and it will launch the game.
 2. To play online, click here - https://mejaz.github.io/Matching_Cards
